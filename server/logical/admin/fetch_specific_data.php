@@ -32,8 +32,6 @@ if($_SERVER['REQUEST_METHOD']==="POST")
               $data=$database_obj->fetch_specific_data();
               echo json_encode($data); 
               
-              
-
             }
             else
             {

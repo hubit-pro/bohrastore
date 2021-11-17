@@ -1,4 +1,5 @@
 <?php
+ini_set("display_errors",1);
 include('../../vendor/autoload.php');
 use \Firebase\JWT\JWT;
 header('Content-Type:application/json');
@@ -14,36 +15,34 @@ if($_SERVER['REQUEST_METHOD']==="POST")
 {
   
       $data=json_decode(file_get_contents("php://input"));
-      $headers=getallheaders();
-        
+    //   $headers=getallheaders();
+   
 
-      if(isset($data->product_id))
+      if(isset($data->email_id))
       {
         try
         {
-          $jwt=$headers['Authorization'];
-          $secret_key="losahji679309";
-          $decoded_data=JWT::decode($jwt,$secret_key,array('HS256'));
+        //   $jwt=$headers['Authorization'];
+        //   $secret_key="losahji679309";
+        //   $decoded_data=JWT::decode($jwt,$secret_key,array('HS256'));
           
      
-          $database_obj->product_id=$data->product_id;
+        //   $database_obj->product_id=$data->product_id;
 
 
-          $datas=$database_obj->fetch_specific_data();
-          $remove_image= $datas['product_image'];
-                
+         
      
          
-
+        $database_obj->email_id=$data->email_id;
          
 
-          if($database_obj->delete_product())
+          if($database_obj->forget_password())
           {
-            unlink($remove_image);
+            
             http_response_code(200);
             echo json_encode(array(
                 "status"=>1,
-                "message"=>"vehicle has been deleted"
+                "message"=>"email has been sent"
             ));
            
 
@@ -61,20 +60,6 @@ if($_SERVER['REQUEST_METHOD']==="POST")
         }
         
       }
-
-      else
-      {
-            http_response_code(404);
-            echo json_encode(array(
-                "status"=>0,
-                "message"=>"data needed"
-            ));
-
-      }
-
-      
-
 }
-
-
+        
 ?>

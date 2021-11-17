@@ -1,4 +1,5 @@
 <?php
+ini_set("display_errors",1);
     class Database
     {
         private  $db_name="mysql:host=localhost;dbname=mobapi";
@@ -8,6 +9,7 @@
 
         public $user;
         public $pass;
+       
 
         public $dmin_id;
         public $category;
@@ -20,7 +22,11 @@
         public $product_price;
 
         public $image_id;
-        public $multipleImage=[];
+
+        public $email_id;
+
+        public $passwordd;
+        public $cpasswordd;
        
 
        
@@ -272,12 +278,70 @@
             }
     
         }
+
+
+
+        public function forget_password()
+        {
+            $qry="select username from adminlogin where username=?";
+            $result=$this->conn->prepare($qry);
+            $email_id=htmlspecialchars(strip_tags($this->email_id));
+            $result->bindparam(1,$email_id);
+            $result->execute();
+            if($result->rowCount()>0)
+            {
+               
+                $subject = "password reset for bohora store";
+                $body = "hi ".$email_id." if you want to reset your password for BohoraStore then  click this link:";
+                $headers = "From:jonam.gyanwali17@gmail.com";
+
+                if (mail($email_id, $subject, $body, $headers)) 
+                {
+                   return true;
+                } 
+                else
+                {
+                    return false;
+                }
+                
+            }
+            else
+            {
+                echo "no email found";
+            }
+           
+    
+    
+
+        }
+        public function update_password()
+        {
+            
+            $qry="update adminlogin set passwordd=?";
+            $result=$this->conn->prepare($qry);
+            $passwordd=htmlspecialchars(strip_tags($this->passwordd));
+            $result->bindParam(1,$passwordd);
+            $result->execute();
+           if($result->rowCount()>0)
+           {
+               return true;
+           }
+           else
+           {
+             return false;
+           }
+
+
+        }
+
+
+        }
     
     
     
            
 
-}
+
 
 
 ?>
